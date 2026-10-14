@@ -1,0 +1,246 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TaskFlow</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Login Page -->
+  <section id="loginPage" class="login-page" hidden>
+    <form id="loginForm" class="login-card">
+      <h1>TaskFlow</h1>
+      <p>Organize your day, your way.</p>
+      <label for="loginName">Your name</label>
+      <input id="loginName" placeholder="Enter your name" required>
+      <button type="submit">Login</button>
+    </form>
+  </section>
+
+  <!-- Main Application -->
+  <div id="app" class="app-layout">
+
+    <aside class="sidebar">
+      <h2 class="logo">TaskFlow<span>.</span></h2>
+
+      <p class="menu-label">MENU</p>
+
+      <nav>
+        <button class="nav-link active" data-page="dashboard">
+          <span>▦</span> Dashboard
+        </button>
+        <button class="nav-link" data-page="tasks">
+          <span>☷</span> My Tasks
+        </button>
+        <button class="nav-link" data-page="calendar">
+          <span>▦</span> Calendar
+        </button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <button id="themeToggle" class="nav-link">
+          <span>◐</span> Toggle Theme
+        </button>
+        <button id="logoutBtn" class="nav-link">
+          <span>↪</span> Logout
+        </button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <h2 id="pageHeading">Dashboard</h2>
+          <p id="pageSubtitle">Here's your productivity overview.</p>
+        </div>
+
+        <div class="top-actions">
+          <button id="notificationBtn" class="icon-btn" title="Notifications">
+            ♧ <span id="notificationCount" class="notification-count" hidden>0</span>
+          </button>
+          <button id="profileBtn" class="profile-btn">
+            <span id="avatar">U</span>
+            <span id="profileName">User</span>
+          </button>
+        </div>
+
+        <div id="notificationPanel" class="dropdown" hidden>
+          <h3>Notifications</h3>
+          <div id="notificationList"></div>
+          <button id="enableNotifications" class="secondary-btn">
+            Enable browser notifications
+          </button>
+        </div>
+
+        <div id="profilePanel" class="dropdown profile-dropdown" hidden>
+          <h3>My Profile</h3>
+          <form id="profileForm">
+            <label for="profileNameInput">Name</label>
+            <input id="profileNameInput" required>
+            <button type="submit">Save Profile</button>
+          </form>
+        </div>
+      </header>
+
+      <!-- DASHBOARD PAGE -->
+      <section id="dashboardPage" class="page active-page">
+        <div class="welcome-row">
+          <div>
+            <h1>Welcome back, <span id="welcomeName">User</span>!</h1>
+            <p>Here's what's happening with your tasks.</p>
+          </div>
+          <button class="primary-btn" data-go="tasks">+ Add New Task</button>
+        </div>
+
+        <div class="stats-grid">
+          <article class="stat-card">
+            <p>Total Tasks</p>
+            <h2 id="totalTasks">0</h2>
+            <span>All your tasks</span>
+          </article>
+          <article class="stat-card">
+            <p>Completed</p>
+            <h2 id="completedTasks">0</h2>
+            <span>Tasks finished</span>
+          </article>
+          <article class="stat-card">
+            <p>Pending</p>
+            <h2 id="pendingTasks">0</h2>
+            <span>Tasks remaining</span>
+          </article>
+          <article class="stat-card">
+            <p>Overdue</p>
+            <h2 id="overdueTasks">0</h2>
+            <span>Past due date</span>
+          </article>
+        </div>
+
+        <section class="panel progress-panel">
+          <h3>Overall Progress</h3>
+          <div class="progress-track">
+            <div id="progressBar" class="progress-bar"></div>
+          </div>
+          <p id="progressText">0% completed</p>
+        </section>
+
+        <section class="panel">
+          <div class="section-heading">
+            <h3>Recent Tasks</h3>
+            <button class="text-btn" data-go="tasks">View all tasks →</button>
+          </div>
+          <div id="recentTasks" class="task-list"></div>
+        </section>
+      </section>
+
+      <!-- MY TASKS PAGE -->
+      <section id="tasksPage" class="page">
+        <div class="welcome-row">
+          <div>
+            <h1>My Tasks</h1>
+            <p>Create and manage all your tasks here.</p>
+          </div>
+        </div>
+
+        <section class="panel">
+          <h3 id="formHeading">Add a New Task</h3>
+          <form id="taskForm" class="task-form">
+            <input type="hidden" id="editTaskId">
+
+            <div class="form-group full-width">
+              <label for="taskTitle">Task title</label>
+              <input id="taskTitle" placeholder="What do you need to do?" required>
+            </div>
+
+            <div class="form-group">
+              <label for="taskPriority">Priority</label>
+              <select id="taskPriority">
+                <option value="Low">Low</option>
+                <option value="Medium" selected>Medium</option>
+                <option value="High">High</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="taskDueDate">Due date</label>
+              <input type="date" id="taskDueDate">
+            </div>
+
+            <div class="form-buttons full-width">
+              <button id="saveTaskBtn" type="submit" class="primary-btn">Add Task</button>
+              <button id="cancelEditBtn" type="button" class="secondary-btn" hidden>
+                Cancel Edit
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <section class="panel">
+          <div class="filters">
+            <input id="searchInput" placeholder="Search tasks...">
+
+            <select id="statusFilter">
+              <option value="all">All Tasks</option>
+              <option value="pending">Pending</option>
+              <option value="completed">Completed</option>
+            </select>
+
+            <select id="priorityFilter">
+              <option value="all">All Priorities</option>
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
+
+            <select id="sortFilter">
+              <option value="newest">Newest First</option>
+              <option value="oldest">Oldest First</option>
+              <option value="dueDate">Due Date</option>
+              <option value="priority">Priority</option>
+            </select>
+          </div>
+
+          <div id="taskList" class="task-list"></div>
+        </section>
+      </section>
+
+      <!-- CALENDAR PAGE -->
+      <section id="calendarPage" class="page">
+        <div class="welcome-row">
+          <div>
+            <h1>Calendar</h1>
+            <p>View your schedule by date.</p>
+          </div>
+        </div>
+
+        <section class="panel calendar-panel">
+          <div class="calendar-header">
+            <button id="prevMonth" class="secondary-btn" aria-label="Previous month">←</button>
+            <h2 id="calendarMonth">Month Year</h2>
+            <button id="nextMonth" class="secondary-btn" aria-label="Next month">→</button>
+          </div>
+
+          <div class="calendar-weekdays">
+            <span>Sun</span><span>Mon</span><span>Tue</span>
+            <span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span>
+          </div>
+
+          <div id="calendarDays" class="calendar-days"></div>
+        </section>
+
+        <section class="panel">
+          <h3 id="selectedDateHeading">Tasks for selected date</h3>
+          <div id="calendarTaskList" class="task-list"></div>
+          <button class="primary-btn" data-go="tasks">+ Add a Task</button>
+        </section>
+      </section>
+
+      <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
